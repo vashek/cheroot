@@ -54,6 +54,10 @@ params = dict(
             'pytest-testmon>=0.9.7',
             'pytest-watch',
 
+            # parallel execution
+            'pytest-circleci',
+            'pytest-xdist',
+
             # measure test coverage
             'coverage',
             # send test coverage to codecov.io
