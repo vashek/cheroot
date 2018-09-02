@@ -15,8 +15,8 @@ install:
   - "mklink /d \"C:\\Program Files\\Python\" %PYTHON%"
   - "SET PYTHON=\"C:\\Program Files\\Python\""
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "python -m pip install tox"
-  - "python -m tox --notest"
+  - "python -m pip install detox tox tox-venv"
+  - "python -m detox --notest"
 
 
 before_build:
@@ -26,7 +26,7 @@ build_script:
   - python -m setup bdist_wheel
 
 test_script:
-  - python -m tox
+  - python -m detox
 
 version: '{build}'
 

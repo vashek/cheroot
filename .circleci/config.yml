@@ -31,9 +31,9 @@ jobs:
         wait
     - run: pyenv global 2.7.14 3.7.0 3.6.4 3.5.4 3.4.7 pypy3.5-5.10.0
 
-    - run: pip install tox tox-pyenv
+    - run: pip install detox tox tox-pyenv
     - checkout
-    - run: tox -e py27,py34,py35,py36,py37,pypy3 -- -p no:sugar
+    - run: detox -e py27,py34,py35,py36,py37,pypy3 -- -p no:sugar
 
   linux-build:
     docker:
@@ -41,8 +41,8 @@ jobs:
 
     steps:
     - checkout
-    - run: pip install tox
-    - run: tox -e py27,py34,py35,py36,py37
+    - run: pip install detox tox tox-pyenv
+    - run: detox -e py27,py34,py35,py36,py37
 
 workflows:
   version: 2

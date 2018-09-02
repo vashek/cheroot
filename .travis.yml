@@ -172,11 +172,11 @@ cache:
   - $HOME/Library/Caches/Homebrew
 
 install:
-- python -m pip install tox tox-venv
-- python -m tox --notest  # Pre-populate a virtualenv with dependencies
+- python -m pip install detox tox tox-venv
+- python -m detox --notest  # Pre-populate a virtualenv with dependencies
 
 script:
-- python -m tox
+- python -m detox
 
 after_failure:
 - ip a
