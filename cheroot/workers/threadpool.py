@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+import platform
 import threading
 import time
 import socket
@@ -27,6 +28,19 @@ class TrueyZero:
 trueyzero = TrueyZero()
 
 _SHUTDOWNREQUEST = None
+
+
+HAS_BUGGY_IS_ALIVE = (
+    platform.python_version_tuple() == (2, 7)
+    and platform.python_implementation() == 'PyPy'
+)
+
+
+def is_thread_alive(t):
+    """Determine whether a given thread is alive."""
+    if HAS_BUGGY_IS_ALIVE:
+        return t.isAlive()
+    return t.is_alive()
 
 
 class WorkerThread(threading.Thread):
@@ -210,7 +224,7 @@ class ThreadPool:
         # Grow/shrink the pool if necessary.
         # Remove any dead threads from our list
         for t in self._threads:
-            if not t.is_alive():
+            if not is_thread_alive(t):
                 self._threads.remove(t)
                 amount -= 1
 
@@ -243,7 +257,7 @@ class ThreadPool:
             endtime = time.time() + timeout
         while self._threads:
             worker = self._threads.pop()
-            if worker is not current and worker.is_alive():
+            if worker is not current and is_thread_alive(worker):
                 try:
                     if timeout is None or timeout < 0:
                         worker.join()
@@ -251,7 +265,7 @@ class ThreadPool:
                         remaining_time = endtime - time.time()
                         if remaining_time > 0:
                             worker.join(remaining_time)
-                        if worker.is_alive():
+                        if is_thread_alive(worker):
                             # We exhausted the timeout.
                             # Forcibly shut down the socket.
                             c = worker.conn
