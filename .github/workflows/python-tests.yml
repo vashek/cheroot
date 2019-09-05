@@ -54,6 +54,8 @@ jobs:
         "{envpython} -m OpenSSL.debug"
         || :
       env: ${{ matrix.env }}
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v1
     - name: Test with tox
       run: |
         python -m tox --parallel 0
